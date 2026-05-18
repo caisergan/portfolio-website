@@ -29,10 +29,10 @@ const year = new Date().getFullYear();
       <div>
         <h5 class="m-0 mb-[14px] text-[11px] uppercase tracking-wider text-muted">Elsewhere</h5>
         <ul class="list-none p-0 m-0 grid gap-2 text-[13px]">
-          <li><a href={social.github} class="text-fg">{social.github.replace("https://", "")} ↗</a></li>
-          <li><a href={social.linkedin} class="text-fg">{social.linkedin.replace("https://", "")} ↗</a></li>
-          {social.readcv && <li><a href={social.readcv} class="text-fg">{social.readcv.replace("https://", "")} ↗</a></li>}
-          {social.x && <li><a href={social.x} class="text-fg">{social.x.replace("https://", "")} ↗</a></li>}
+          <li><a href={social.github} target="_blank" rel="noopener" class="text-fg">{social.github.replace("https://", "")} ↗</a></li>
+          <li><a href={social.linkedin} target="_blank" rel="noopener" class="text-fg">{social.linkedin.replace("https://", "")} ↗</a></li>
+          {social.readcv && <li><a href={social.readcv} target="_blank" rel="noopener" class="text-fg">{social.readcv.replace("https://", "")} ↗</a></li>}
+          {social.x && <li><a href={social.x} target="_blank" rel="noopener" class="text-fg">{social.x.replace("https://", "")} ↗</a></li>}
         </ul>
       </div>
 

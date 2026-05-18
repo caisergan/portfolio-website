@@ -20,9 +20,9 @@ const { title, description = "Personal portfolio." } = Astro.props;
   </head>
   <body>
     <div class="grid-bg" aria-hidden="true"></div>
-    <main id="top" class="relative z-10">
+    <div id="top" class="relative z-10">
       <slot />
-    </main>
+    </div>
 
     <script>
       document.querySelectorAll<HTMLAnchorElement>('a[href^="#"]').forEach((a) => {
@@ -34,7 +34,7 @@ const { title, description = "Personal portfolio." } = Astro.props;
           const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
           const top = id ? target.getBoundingClientRect().top + window.scrollY - 56 : 0;
           window.scrollTo({ top, behavior: reduce ? "auto" : "smooth" });
-          history.replaceState(null, "", id ? "#" + id : " ");
+          history.replaceState(null, "", id ? "#" + id : window.location.pathname);
         });
       });
     </script>

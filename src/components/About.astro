@@ -16,7 +16,7 @@ const { about } = profile;
       ))}
     </div>
 
-    <div class="border border-line bg-bg" aria-label="At a glance">
+    <div class="border border-line bg-bg" role="region" aria-label="At a glance">
       {about.atAGlance.map((row, i) => (
         <div class={`grid grid-cols-[110px_1fr] gap-4 px-4 py-3 text-[13px] ${i < about.atAGlance.length - 1 ? "border-b border-line" : ""}`}>
           <span class="text-muted">{row.k}</span>
