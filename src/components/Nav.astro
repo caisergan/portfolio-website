@@ -1,0 +1,39 @@
+---
+import { profile } from "../data/profile";
+
+const links = [
+  { n: "01", label: "about", href: "#about" },
+  { n: "02", label: "work", href: "#work" },
+  { n: "03", label: "oss", href: "#oss" },
+  { n: "04", label: "experience", href: "#experience" },
+  { n: "05", label: "stack", href: "#stack" },
+];
+---
+
+<nav class="sticky top-0 z-50 bg-bg border-b border-line">
+  <div class="wrap flex items-center justify-between py-[14px] text-[13px]">
+    <a href="#top" class="flex items-center gap-[10px] text-fg font-semibold no-underline hover:no-underline">
+      <span class="inline-block w-2 h-2 bg-ok" style="box-shadow: 0 0 0 3px rgba(22,163,74,0.18);" aria-hidden="true"></span>
+      <span>{profile.handle}</span>
+      <span class="text-muted font-normal">/ {profile.role}</span>
+    </a>
+
+    <div class="hidden md:flex gap-1 flex-wrap">
+      {links.map(({ n, label, href }) => (
+        <a
+          href={href}
+          class="text-fg-2 px-[10px] py-[6px] border border-transparent hover:text-fg hover:bg-bg-soft hover:border-line no-underline hover:no-underline"
+        >
+          <span class="text-muted mr-1 font-medium">{n}.</span>{label}
+        </a>
+      ))}
+    </div>
+
+    <a
+      href={profile.resumeUrl}
+      class="inline-flex items-center gap-2 px-3 py-[7px] bg-fg text-bg border border-fg no-underline hover:bg-accent hover:border-accent hover:text-white hover:no-underline"
+    >
+      resume.pdf <span class="transition-transform">↓</span>
+    </a>
+  </div>
+</nav>

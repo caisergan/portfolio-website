@@ -1,0 +1,35 @@
+---
+import { profile } from "../data/profile";
+import Section from "./Section.astro";
+
+const { experience } = profile;
+const yearsTotal = new Date().getFullYear() - profile.yearsSince;
+const expTitle = `${yearsTotal} years, ${experience.length} companies`;
+---
+
+<Section id="experience" tag="04 / experience" title={expTitle} meta={`git log --author=${profile.handle}`}>
+  <div class="grid">
+    {experience.map((j, i) => (
+      <div class={`grid md:grid-cols-[180px_1fr] gap-8 py-6 ${i === 0 ? "border-t border-line-strong" : "border-t border-line"} ${i === experience.length - 1 ? "border-b border-line" : ""}`}>
+        <div class="text-[12px] text-muted pt-1">
+          <div>
+            {j.current && <span class="text-ok font-semibold">● now</span>}
+            {j.current ? ` — ${j.when.replace("now — ", "")}` : j.when}
+          </div>
+          <div class="mt-1">{j.duration}</div>
+        </div>
+        <div>
+          <h4 class="m-0 mb-1 text-[16px] font-semibold">
+            {j.title} <span class="text-muted font-normal">@ {j.company}</span>
+          </h4>
+          <div class="text-[12px] text-muted mb-3">{j.where}</div>
+          <ul class="list-none p-0 m-0">
+            {j.bullets.map((b) => (
+              <li class="pl-[18px] relative text-fg-2 text-[13px] leading-[1.6] mb-1 before:content-['→'] before:absolute before:left-0 before:text-accent">{b}</li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    ))}
+  </div>
+</Section>

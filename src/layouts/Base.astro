@@ -1,0 +1,42 @@
+---
+import "../styles/global.css";
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = "Personal portfolio." } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{title}</title>
+  </head>
+  <body>
+    <div class="grid-bg" aria-hidden="true"></div>
+    <main id="top" class="relative z-10">
+      <slot />
+    </main>
+
+    <script>
+      document.querySelectorAll<HTMLAnchorElement>('a[href^="#"]').forEach((a) => {
+        a.addEventListener("click", (e) => {
+          const id = a.getAttribute("href")!.slice(1);
+          const target = id ? document.getElementById(id) : document.body;
+          if (!target) return;
+          e.preventDefault();
+          const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+          const top = id ? target.getBoundingClientRect().top + window.scrollY - 56 : 0;
+          window.scrollTo({ top, behavior: reduce ? "auto" : "smooth" });
+          history.replaceState(null, "", id ? "#" + id : " ");
+        });
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,54 @@
+---
+import { profile } from "../data/profile";
+
+const { email, social, readingList, resumeUrl } = profile;
+const year = new Date().getFullYear();
+---
+
+<footer id="resume" class="pt-16 pb-12 border-t border-line-strong bg-bg">
+  <div class="wrap">
+    <div class="grid md:grid-cols-[1.4fr_1fr_1fr] gap-12 items-start">
+      <div>
+        <h5 class="m-0 mb-[14px] text-[11px] uppercase tracking-wider text-muted">Get in touch</h5>
+        <div class="text-[28px] font-bold tracking-tight m-0 mb-2">
+          <a href={`mailto:${email}`} class="text-fg hover:text-accent">{email}</a>
+        </div>
+        <p class="text-muted text-[13px] max-w-[36ch]">
+          Open to senior fullstack and platform roles. Quickest reply is email — I read everything.
+        </p>
+        <div class="flex gap-[10px] mt-[18px] flex-wrap">
+          <a href={resumeUrl} class="inline-flex items-center gap-2 px-4 py-[11px] border border-line-strong bg-fg text-bg text-[13px] no-underline hover:bg-accent hover:border-accent hover:text-white hover:no-underline">
+            Download résumé.pdf <span>↓</span>
+          </a>
+          <a href={`mailto:${email}`} class="inline-flex items-center gap-2 px-4 py-[11px] border border-line-strong bg-bg text-fg text-[13px] no-underline hover:bg-fg hover:text-bg hover:no-underline">
+            Email
+          </a>
+        </div>
+      </div>
+
+      <div>
+        <h5 class="m-0 mb-[14px] text-[11px] uppercase tracking-wider text-muted">Elsewhere</h5>
+        <ul class="list-none p-0 m-0 grid gap-2 text-[13px]">
+          <li><a href={social.github} class="text-fg">{social.github.replace("https://", "")} ↗</a></li>
+          <li><a href={social.linkedin} class="text-fg">{social.linkedin.replace("https://", "")} ↗</a></li>
+          {social.readcv && <li><a href={social.readcv} class="text-fg">{social.readcv.replace("https://", "")} ↗</a></li>}
+          {social.x && <li><a href={social.x} class="text-fg">{social.x.replace("https://", "")} ↗</a></li>}
+        </ul>
+      </div>
+
+      <div>
+        <h5 class="m-0 mb-[14px] text-[11px] uppercase tracking-wider text-muted">Reading list</h5>
+        <ul class="list-none p-0 m-0 grid gap-2 text-[13px]">
+          {readingList.map((r) => (
+            <li><a href={r.href} class="text-fg">{r.title}</a></li>
+          ))}
+        </ul>
+      </div>
+    </div>
+
+    <div class="mt-14 pt-5 border-t border-line flex justify-between text-[11px] text-muted flex-wrap gap-3">
+      <span>© {year} {profile.name} · hand-built with html · no analytics, no cookies, no fuss.</span>
+      <span>egeayyildiz.me</span>
+    </div>
+  </div>
+</footer>

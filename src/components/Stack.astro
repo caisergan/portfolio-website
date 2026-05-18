@@ -1,0 +1,32 @@
+---
+import { profile } from "../data/profile";
+import Section from "./Section.astro";
+
+const cols = [
+  { idx: "01", title: "Languages", items: profile.stack.languages },
+  { idx: "02", title: "Frontend",  items: profile.stack.frontend },
+  { idx: "03", title: "Backend",   items: profile.stack.backend },
+  { idx: "04", title: "Infra",     items: profile.stack.infra },
+];
+---
+
+<Section id="stack" tag="05 / stack" title="Tools I actually use" meta="~/.config/stack.toml" class="border-b-0">
+  <div class="grid grid-cols-2 md:grid-cols-4 border-t border-l border-line">
+    {cols.map((c) => (
+      <div class="border-r border-b border-line px-[22px] py-5">
+        <h5 class="m-0 mb-3 text-[11px] uppercase tracking-wider text-muted flex justify-between items-baseline">
+          <span>{c.title}</span>
+          <span class="text-accent">{c.idx}</span>
+        </h5>
+        <ul class="list-none p-0 m-0">
+          {c.items.map((it, i) => (
+            <li class={`text-[13px] py-[5px] text-fg flex justify-between ${i < c.items.length - 1 ? "border-b border-dashed border-line" : ""}`}>
+              <span>{it.name}</span>
+              <span class={`text-[11px] ${it.level === "daily" ? "text-accent" : "text-muted"}`}>{it.level}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    ))}
+  </div>
+</Section>

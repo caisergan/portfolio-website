@@ -1,0 +1,33 @@
+---
+import { profile } from "../data/profile";
+const { handle, location, timezone, available, hero } = profile;
+---
+
+<div class="border border-line-strong bg-bg text-[12.5px] leading-[1.7]" role="img" aria-label="Terminal status">
+  <div class="flex items-center gap-2 px-3 py-2 border-b border-line bg-bg-soft text-muted text-[11px] uppercase tracking-wider">
+    <span class="inline-flex gap-[6px]">
+      <i class="w-[9px] h-[9px] bg-line inline-block"></i>
+      <i class="w-[9px] h-[9px] bg-line inline-block"></i>
+      <i class="w-[9px] h-[9px] bg-line inline-block"></i>
+    </span>
+    <span>~/portfolio — zsh</span>
+  </div>
+  <div class="px-[18px] py-4">
+    <div><span class="text-accent font-semibold">$</span> whoami</div>
+    <div><span class="text-fg">{handle}</span> <span class="text-muted">// {profile.role} engineer · {location.toLowerCase()}</span></div>
+
+    <div class="mt-2"><span class="text-accent font-semibold">$</span> cat status.json</div>
+    <div><span class="text-muted">{"{"}</span></div>
+    <div>&nbsp;&nbsp;<span class="text-muted">"available":</span> <span class="text-ok">{String(available)}</span>,</div>
+    <div>&nbsp;&nbsp;<span class="text-muted">"location":</span> <span class="text-fg">"{location}"</span>,</div>
+    <div>&nbsp;&nbsp;<span class="text-muted">"timezone":</span> <span class="text-fg">"{timezone}"</span>,</div>
+    <div>&nbsp;&nbsp;<span class="text-muted">"focus":</span> <span class="text-fg">"{hero.terminal.focus}"</span>,</div>
+    <div>&nbsp;&nbsp;<span class="text-muted">"open_to":</span> <span style="background:#3a3a00;color:#facc15;padding:0 3px;">"{hero.terminal.openTo}"</span></div>
+    <div><span class="text-muted">{"}"}</span></div>
+
+    <div class="mt-2"><span class="text-accent font-semibold">$</span> uptime</div>
+    <div><span class="text-fg">{hero.terminal.uptime}</span> <span class="text-muted">shipping</span> · <span class="text-fg">0</span> <span class="text-muted">prod incidents this quarter</span></div>
+
+    <div class="mt-2"><span class="text-accent font-semibold">$</span> <span class="caret"></span></div>
+  </div>
+</div>

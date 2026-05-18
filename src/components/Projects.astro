@@ -1,0 +1,45 @@
+---
+import { profile } from "../data/profile";
+import Section from "./Section.astro";
+
+const { projects } = profile;
+---
+
+<Section id="work" tag="02 / selected work" title="Four projects worth talking about" meta="ls -l ~/work/featured">
+  <div class="grid border-t border-line">
+    {projects.map((p) => (
+      <article class="grid md:grid-cols-[56px_1fr_280px] gap-7 py-7 border-b border-line items-start transition-colors hover:bg-bg-soft">
+        <div class="text-[13px] text-muted font-semibold pt-1">[{p.num}]</div>
+
+        <div>
+          <h3 class="text-[22px] m-0 mb-[6px] tracking-tight flex items-baseline gap-3 flex-wrap">
+            {p.name}
+            <span class="text-[13px] text-muted font-normal">{p.year}</span>
+          </h3>
+          <div class="text-[12px] text-accent uppercase tracking-wider mb-3">{p.role}</div>
+          <p class="m-0 mb-4 text-fg-2 text-[14px] leading-[1.65] max-w-[62ch]">{p.blurb}</p>
+
+          <div class="flex flex-wrap gap-[6px]">
+            {p.stack.map((tag) => (
+              <span class="text-[11px] px-2 py-[2px] border border-line text-fg-2 bg-bg">{tag}</span>
+            ))}
+          </div>
+
+          <div class="flex gap-[14px] mt-4 text-[12px]">
+            {p.links.map((l) => (
+              <a href={l.href} class="text-fg after:content-['_↗'] after:text-accent hover:no-underline">{l.label}</a>
+            ))}
+          </div>
+        </div>
+
+        <div class="md:border-l md:border-line md:pl-5 text-[12px] text-muted border-t md:border-t-0 border-line pt-4 md:pt-0">
+          {p.meta.map((m, i) => (
+            <div class={`flex justify-between py-1 ${i < p.meta.length - 1 ? "border-b border-dashed border-line" : ""}`}>
+              <span>{m.k}</span><span class="text-fg">{m.v}</span>
+            </div>
+          ))}
+        </div>
+      </article>
+    ))}
+  </div>
+</Section>

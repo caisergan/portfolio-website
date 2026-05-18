@@ -1,0 +1,155 @@
+---
+import { profile } from "../data/profile";
+import Section from "./Section.astro";
+import Heatmap from "./Heatmap.astro";
+import RepoList from "./RepoList.astro";
+
+const githubMeta = profile.social.github.replace("https://", "");
+---
+
+<Section id="oss" tag="03 / open source" title="Public commits & repos" meta={githubMeta}>
+  <div class="grid md:grid-cols-[1fr_320px] gap-12 items-start">
+    <div>
+      <div class="border border-line p-[22px] bg-bg">
+        <div class="flex justify-between items-baseline mb-[18px] text-[12px] text-muted">
+          <strong id="gh-headline" class="text-fg font-semibold text-[14px]">— contributions in the last year</strong>
+          <span id="gh-streaks">longest streak · — · current · —</span>
+        </div>
+
+        <Heatmap />
+
+        <div class="flex justify-between items-center text-[11px] text-muted">
+          <span id="gh-date-from">—</span>
+          <span class="flex gap-[3px]">
+            <span class="text-[10px] mr-[6px]">less</span>
+            <i class="w-[11px] h-[11px] inline-block bg-[#1a1a1a]"></i>
+            <i class="w-[11px] h-[11px] inline-block bg-accent-soft"></i>
+            <i class="w-[11px] h-[11px] inline-block bg-[#2563eb]"></i>
+            <i class="w-[11px] h-[11px] inline-block bg-[#3b82f6]"></i>
+            <i class="w-[11px] h-[11px] inline-block bg-accent"></i>
+            <span class="text-[10px] ml-[6px]">more</span>
+          </span>
+          <span id="gh-date-to">—</span>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-3 gap-3 mt-5">
+        <div class="border border-line p-[14px]">
+          <div id="gh-stat-commits" class="text-[22px] font-bold tracking-tight">—</div>
+          <div class="text-[11px] text-muted uppercase tracking-wider mt-1">commits / 12mo</div>
+        </div>
+        <div class="border border-line p-[14px]">
+          <div id="gh-stat-prs" class="text-[22px] font-bold tracking-tight">—</div>
+          <div class="text-[11px] text-muted uppercase tracking-wider mt-1">pull requests</div>
+        </div>
+        <div class="border border-line p-[14px]">
+          <div id="gh-stat-stars" class="text-[22px] font-bold tracking-tight">—</div>
+          <div class="text-[11px] text-muted uppercase tracking-wider mt-1">stars across repos</div>
+        </div>
+      </div>
+    </div>
+
+    <RepoList />
+  </div>
+</Section>
+
+<script>
+  type GithubData = {
+    generatedAt: string;
+    contributions: {
+      total: number;
+      longestStreak: number;
+      currentStreak: number;
+      weeks: { date: string; count: number; level: 0 | 1 | 2 | 3 | 4 }[][];
+    };
+    topRepos: {
+      name: string;
+      description: string | null;
+      stars: number;
+      language: string | null;
+      languageColor: string | null;
+      url: string;
+    }[];
+    stats: { commits12mo: number; mergedPrs12mo: number; totalStars: number };
+  };
+
+  function fmt(n: number): string {
+    return n.toLocaleString("en-US");
+  }
+
+  function rangeLabel(weeks: GithubData["contributions"]["weeks"]): [string, string] {
+    const first = weeks[0]?.[0]?.date ?? "";
+    const last = weeks[weeks.length - 1]?.[6]?.date ?? "";
+    const f = (s: string) => {
+      if (!s) return "—";
+      const d = new Date(s + "T00:00:00");
+      return d.toLocaleString("en-US", { month: "short", year: "numeric" });
+    };
+    return [f(first), f(last)];
+  }
+
+  async function hydrate(): Promise<void> {
+    try {
+      const res = await fetch("/data/github.json", { cache: "no-store" });
+      if (!res.ok) throw new Error("not ok");
+      const data: GithubData = await res.json();
+
+      const head = document.getElementById("gh-headline");
+      if (head) head.textContent = `${fmt(data.contributions.total)} contributions in the last year`;
+
+      const streaks = document.getElementById("gh-streaks");
+      if (streaks) streaks.textContent = `longest streak · ${data.contributions.longestStreak} days · current · ${data.contributions.currentStreak} days`;
+
+      const [from, to] = rangeLabel(data.contributions.weeks);
+      const fromEl = document.getElementById("gh-date-from");
+      const toEl = document.getElementById("gh-date-to");
+      if (fromEl) fromEl.textContent = from;
+      if (toEl) toEl.textContent = to;
+
+      data.contributions.weeks.forEach((week, w) => {
+        week.forEach((day, d) => {
+          const cell = document.querySelector<HTMLElement>(`#heatmap [data-week="${w}"][data-day="${d}"]`);
+          if (cell && day.level > 0) cell.dataset.level = String(day.level);
+        });
+      });
+
+      const c = document.getElementById("gh-stat-commits");
+      const p = document.getElementById("gh-stat-prs");
+      const s = document.getElementById("gh-stat-stars");
+      if (c) c.textContent = fmt(data.stats.commits12mo);
+      if (p) p.textContent = fmt(data.stats.mergedPrs12mo);
+      if (s) s.textContent = fmt(data.stats.totalStars);
+
+      data.topRepos.forEach((repo, i) => {
+        const row = document.querySelector<HTMLAnchorElement>(`#repos [data-slot="${i}"]`);
+        if (!row) return;
+        row.href = repo.url;
+        const nameEl = row.querySelector(".repo-name");
+        if (nameEl) {
+          nameEl.textContent = repo.name;
+          nameEl.classList.remove("text-muted");
+          nameEl.classList.add("text-fg");
+        }
+        const descEl = row.querySelector(".repo-desc");
+        if (descEl) descEl.textContent = repo.description ?? "";
+        const starsEl = row.querySelector(".repo-stars");
+        if (starsEl) starsEl.textContent = repo.stars >= 1000 ? (repo.stars / 1000).toFixed(1) + "k" : String(repo.stars);
+        const langEl = row.querySelector(".repo-lang");
+        if (langEl) langEl.textContent = repo.language ?? "—";
+        const dot = row.querySelector<HTMLElement>(".repo-lang-dot");
+        if (dot && repo.languageColor) dot.style.background = repo.languageColor;
+      });
+    } catch {
+      const head = document.getElementById("gh-headline");
+      if (head) head.textContent = "GitHub stats unavailable";
+      const streaks = document.getElementById("gh-streaks");
+      if (streaks) streaks.textContent = "";
+    }
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", hydrate);
+  } else {
+    hydrate();
+  }
+</script>

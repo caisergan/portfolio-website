@@ -1,0 +1,20 @@
+---
+const WEEKS = 52;
+const DAYS = 7;
+const weekIndices = Array.from({ length: WEEKS }, (_, i) => i);
+const dayIndices = Array.from({ length: DAYS }, (_, i) => i);
+---
+
+<div id="heatmap" class="grid grid-cols-[repeat(52,1fr)] gap-[3px] mb-[14px]" aria-hidden="true">
+  {weekIndices.map((w) => (
+    <div class="grid grid-rows-7 gap-[3px]">
+      {dayIndices.map((d) => (
+        <div
+          class="aspect-square bg-[#1a1a1a] border border-[rgba(255,255,255,0.03)] data-[level='1']:bg-accent-soft data-[level='2']:bg-[#2563eb] data-[level='3']:bg-[#3b82f6] data-[level='4']:bg-accent"
+          data-week={w}
+          data-day={d}
+        ></div>
+      ))}
+    </div>
+  ))}
+</div>

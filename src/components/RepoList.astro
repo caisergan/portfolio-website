@@ -1,0 +1,27 @@
+---
+const slots = [0, 1, 2, 3, 4];
+---
+
+<div id="repos" class="border border-line">
+  {slots.map((i) => (
+    <a
+      class={`repo-row block px-4 py-[14px] grid grid-cols-[1fr_auto] gap-3 items-start text-fg no-underline hover:no-underline ${i < slots.length - 1 ? "border-b border-line" : ""}`}
+      href="#"
+      data-slot={i}
+    >
+      <div>
+        <div class="font-semibold text-[13px] text-fg">
+          <span class="repo-name text-muted">—</span>
+        </div>
+        <div class="repo-desc text-muted text-[12px] mt-[2px] leading-[1.5]">—</div>
+      </div>
+      <div class="text-[11px] text-muted flex gap-[10px] items-center whitespace-nowrap">
+        <span class="inline-flex items-center gap-1">★ <span class="repo-stars">—</span></span>
+        <span class="inline-flex items-center gap-1">
+          <span class="repo-lang-dot w-2 h-2 inline-block rounded-full bg-line"></span>
+          <span class="repo-lang">—</span>
+        </span>
+      </div>
+    </a>
+  ))}
+</div>

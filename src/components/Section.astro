@@ -1,0 +1,26 @@
+---
+interface Props {
+  id?: string;
+  tag: string;
+  title: string;
+  meta?: string;
+  class?: string;
+}
+
+const { id, tag, title, meta, class: className = "" } = Astro.props;
+---
+
+<section id={id} class={`py-[88px] border-b border-line ${className}`}>
+  <div class="wrap">
+    <div class="grid md:grid-cols-[180px_1fr] items-baseline gap-8 mb-10">
+      <div class="text-muted text-xs uppercase tracking-wider">
+        <span class="text-accent">//&nbsp;</span>{tag}
+      </div>
+      <h2 class="text-[28px] font-semibold tracking-tight m-0">
+        {title}
+        {meta && <span class="text-muted font-normal text-[13px] ml-3">{meta}</span>}
+      </h2>
+    </div>
+    <slot />
+  </div>
+</section>
